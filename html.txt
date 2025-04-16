@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コーチのための少年野球練習メニュー</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --baseball-blue: #004687;
+            --baseball-gold: #FFD700;
+            --light-blue: #e9f0f8;
+            --dark-blue: #003366;
+        }
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .navbar {
+            background-color: var(--baseball-blue);
+        }
+        
+        .navbar-brand {
+            color: var(--baseball-gold) !important;
+            font-weight: bold;
+        }
+        
+        .nav-link {
+            color: white !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--baseball-blue);
+            border-color: var(--baseball-blue);
+        }
+        
+        .btn-outline-primary {
+            color: var(--baseball-blue);
+            border-color: var(--baseball-blue);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--baseball-blue);
+            color: white;
+        }
+        
+        .card {
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .badge-primary {
+            background-color: var(--baseball-blue);
+            color: white;
+        }
+        
+        .badge-warning {
+            background-color: var(--baseball-gold);
+            color: var(--dark-blue);
+        }
+        
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .favorite-btn i {
+            color: #dc3545;
+            font-size: 18px;
+        }
+        
+        .difficulty-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .beginner {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .intermediate {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .advanced {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .new-badge {
+            position: absolute;
+            top: 10px;
+            right: 60px;
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--baseball-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .chat-window {
+            display: none;
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background-color: var(--baseball-blue);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+        }
+        
+        .chat-messages {
+            height: 330px;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #e9e9e9;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        
+        .chat-input button {
+            background-color: var(--baseball-blue);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+        }
+        
+        .user-message {
+            background-color: var(--light-blue);
+            color: #212529;
+            padding: 10px 15px;
+            border-radius: 20px 20px 0 20px;
+            margin-left: auto;
+        }
+        
+        .ai-message {
+            background-color: #f1f1f1;
+            color: #212529;
+            padding: 10px 15px;
+            border-radius: 20px 20px 20px 0;
+        }
+        
+        .category-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .defense {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .batting {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .running {
+            background-color: #FF9800;
+            color: white;
+        }
+        
+        .section-title {
+            color: var(--baseball-blue);
+            font-weight: bold;
+            border-left: 5px solid var(--baseball-gold);
+            padding-left: 15px;
+            margin: 30px 0 20px;
+        }
+        
+        .carousel-container {
+            position: relative;
+            margin: 30px 0;
+        }
+        
+        .carousel-control-prev, .carousel-control-next {
+            width: 40px;
+            height: 40px;
+            background-color: var(--baseball-blue);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .age-filter {
+            background-color: var(--light-blue);
+            border-color: var(--baseball-blue);
+            color: var(--baseball-blue);
+            font-weight: bold;
+        }
+        
+        .age-filter:hover, .age-filter:focus {
+            background-color: var(--baseball-blue);
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--baseball-blue);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        .footer-links a {
+            color: var(--baseball-gold);
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- ナビゲーションバー -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-baseball-ball me-2"></i>コーチのための少年野球練習メニュー
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">ホーム</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">練習メニュー集</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">コーチ向けガイド</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">お問い合わせ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <div class="container mt-4">
+        <!-- 検索・フィルターセクション -->
+        <div class="row g-3 align-items-center mb-4">
+            <div class="col-md-3">
+                <select class="form-select age-filter">
+                    <option selected>年齢を選択</option>
+                    <option value="低学年">低学年 (1-2年生)</option>
+                    <option value="中学年">中学年 (3-4年生)</option>
+                    <option value="高学年">高学年 (5-6年生)</option>
+                </select>
+            </div>
+            <div class="col-md-9">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="動画タイトルやキーワードで検索...">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search"></i> 検索
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- カテゴリタブ -->
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">すべて</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">守備 <span class="badge bg-primary rounded-pill">24</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">打撃 <span class="badge bg-primary rounded-pill">18</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">走塁 <span class="badge bg-primary rounded-pill">12</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">コーチング <span class="badge bg-primary rounded-pill">15</span></a>
+            </li>
+        </ul>
+
+        <!-- 新着動画セクション -->
+        <h2 class="section-title">新着練習メニュー</h2>
+        <div id="newVideosCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                                    <span class="difficulty-badge beginner">初級</span>
+                                    <span class="new-badge">NEW</span>
+                                    <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">低学年向け捕球の基本</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">2025年4月15日</small>
+                                    </p>
+                                    <div>
+                                        <span class="category-tag defense">守備</span>
+                                        <span class="category-tag">低学年</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                                    <span class="difficulty-badge intermediate">中級</span>
+                                    <span class="new-badge">NEW</span>
+                                    <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">バッティングフォーム改善ドリル</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">2025年4月14日</small>
+                                    </p>
+                                    <div>
+                                        <span class="category-tag batting">打撃</span>
+                                        <span class="category-tag">中学年</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                                    <span class="difficulty-badge advanced">上級</span>
+                                    <span class="new-badge">NEW</span>
+                                    <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">高学年向け走塁技術</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">2025年4月13日</small>
+                                    </p>
+                                    <div>
+                                        <span class="category-tag running">走塁</span>
+                                        <span class="category-tag">高学年</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                                    <span class="difficulty-badge beginner">初級</span>
+                                    <span class="new-badge">NEW</span>
+                                    <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">チーム練習の効率的な進め方</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">2025年4月12日</small>
+                                    </p>
+                                    <div>
+                                        <span class="category-tag">コーチング</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                                    <span class="difficulty-badge intermediate">中級</span>
+                                    <span class="new-badge">NEW</span>
+                                    <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">守備連携ドリル</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">2025年4月11日</small>
+                                    </p>
+                                    <div>
+                                        <span class="category-tag defense">守備</span>
+                                        <span class="category-tag">中学年</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                                    <span class="difficulty-badge advanced">上級</span>
+                                    <span class="new-badge">NEW</span>
+                                    <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">打撃上達のための体の使い方</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">2025年4月10日</small>
+                                    </p>
+                                    <div>
+                                        <span class="category-tag batting">打撃</span>
+                                        <span class="category-tag">高学年</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#newVideosCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#newVideosCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <!-- メインコンテンツセクション -->
+        <h2 class="section-title">人気練習メニュー</h2>
+        <div class="row">
+            <!-- 動画カード1行目 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                        <span class="difficulty-badge beginner">初級</span>
+                        <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">低学年のためのキャッチボール練習</h5>
+                        <p class="card-text">
+                            <small class="text-muted">2025年3月15日</small>
+                        </p>
+                        <div>
+                            <span class="category-tag defense">守備</span>
+                            <span class="category-tag">低学年</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                        <span class="difficulty-badge intermediate">中級</span>
+                        <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">バッティングの基本フォーム</h5>
+                        <p class="card-text">
+                            <small class="text-muted">2025年3月10日</small>
+                        </p>
+                        <div>
+                            <span class="category-tag batting">打撃</span>
+                            <span class="category-tag">中学年</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                        <span class="difficulty-badge beginner">初級</span>
+                        <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">塁間走のコツとドリル</h5>
+                        <p class="card-text">
+                            <small class="text-muted">2025年3月5日</small>
+                        </p>
+                        <div>
+                            <span class="category-tag running">走塁</span>
+                            <span class="category-tag">低学年</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 動画カード2行目 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                        <span class="difficulty-badge advanced">上級</span>
+                        <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">内野手の送球技術</h5>
+                        <p class="card-text">
+                            <small class="text-muted">2025年2月28日</small>
+                        </p>
+                        <div>
+                            <span class="category-tag defense">守備</span>
+                            <span class="category-tag">高学年</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                        <span class="difficulty-badge intermediate">中級</span>
+                        <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">選球眼を鍛えるバッティング練習</h5>
+                        <p class="card-text">
+                            <small class="text-muted">2025年2月20日</small>
+                        </p>
+                        <div>
+                            <span class="category-tag batting">打撃</span>
+                            <span class="category-tag">中学年</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                        <span class="difficulty-badge advanced">上級</span>
+                        <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">試合で活きる走塁テクニック</h5>
+                        <p class="card-text">
+                            <small class="text-muted">2025年2月15日</small>
+                        </p>
+                        <div>
+                            <span class="category-tag running">走塁</span>
+                            <span class="category-tag">高学年</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 動画カード3行目 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                        <span class="difficulty-badge beginner">初級</span>
+                        <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">子供たちへの効果的な声かけ</h5>
+                        <p class="card-text">
+                            <small class="text-muted">2025年2月10日</small>
+                        </p>
+                        <div>
+                            <span class="category-tag">コーチング</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                        <span class="difficulty-badge intermediate">中級</span>
+                        <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">ゴロの捕り方ドリル集</h5>
+                        <p class="card-text">
+                            <small class="text-muted">2025年2月5日</small>
+                        </p>
+                        <div>
+                            <span class="category-tag defense">守備</span>
+                            <span class="category-tag">中学年</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="video-thumbnail" style="background-image: url('https://via.placeholder.com/300x169');">
+                        <span class="difficulty-badge advanced">上級</span>
+                        <button class="favorite-btn"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">バッティングパワーを引き出す練習</h5>
+                        <p class="card-text">
+                            <small class="text-muted">2025年1月30日</small>
+                        </p>
+                        <div>
+                            <span class="category-tag batting">打撃</span>
+                            <span class="category-tag">高学年</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- もっと見るボタン -->
+        <div class="text-center mt-4 mb-5">
+            <button class="btn btn-outline-primary px-4 py-2">もっと見る <i class="fas fa-chevron-down ms-2"></i></button>
+        </div>
+    </div>
+
+    <!-- チャットボット -->
+    <div class="chat-container">
+        <div class="chat-button" id="chat-toggle">
+            <i class="fas fa-comments fa-lg"></i>
+        </div>
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">
+                <i class="fas fa-robot me-2"></i> 練習メニューAIアシスタント
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message ai-message">
+                    こんにちは！練習メニューについて質問があれば、お気軽にどうぞ。例えば「低学年向けの1時間の守備練習メニューを教えて」など。
+                </div>
+                <!-- チャットメッセージがここに追加されます -->
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="質問を入力してください..." id="chat-input">
+                <button id="chat-send">送信</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- フッター -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">コーチのための少年野球練習メニュー</h5>
+                    <p>少年野球コーチのための練習メニューまとめサイト。守備・打撃・走塁など、様々なドリルを年齢別・レベル別に検索できます。</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">リンク</h5>
+                    <div class="footer-links">
+                        <a href="#">ホーム</a>
+                        <a href="#">練習メニュー集</a>
+                        <a href="#">コーチ向けガイド</a>
+                        <a href="#">お問い合わせ</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">お問い合わせ</h5>
+                    <p><i class="fas fa-envelope me-2"></i> info@baseball-coach.jp</p>
+                    <p><i class="fas fa-phone me-2"></i> 03-1234-5678</p>
+                </div>
+            </div>
+            <hr class="mt-
