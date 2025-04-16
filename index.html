@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>少年野球 練習ドリル共有サイト</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* スタイル */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #000; /* 背景色を黒に */
+      color: #fff; /* 文字色を白に */
+    }
+
+    header {
+      background-color: #007bff; /* ヘッダー色を青に */
+    }
+
+    #new-contents {
+      background-color: rgba(0, 123, 255, 0.5); /* 新着コンテンツ背景色を半透明の青に */
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    #search-form {
+      background-color: rgba(0, 123, 255, 0.3); /* 検索フォーム背景色をさらに薄い青に */
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      margin-top: 20px;
+    }
+
+    #search-results {
+      margin-top: 20px;
+    }
+
+    .card {
+      margin-bottom: 20px;
+      background-color: rgba(255, 255, 255, 0.1); /* カードの背景色を薄い白に */
+      border: 1px solid #007bff; /* カードの枠線を青に */
+    }
+
+    footer {
+      background-color: #343a40;
+    }
+  </style>
+</head>
+<body>
+  <header class="bg-primary text-white py-3">
+    <div class="container">
+      <h1><i class="fas fa-baseball-ball"></i> 少年野球 練習ドリル共有サイト</h1>
+    </div>
+  </header>
+
+  <div class="container mt-3">
+    <!-- 新着動画・サイト -->
+    <section id="new-contents">
+      <h2>新着動画・サイト</h2>
+      <div class="row">
+        <!-- 新着コンテンツの表示例 -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">動画タイトル</h5>
+              <p class="card-text">投稿者: 浅利</p>
+              <a href="#" class="btn btn-primary">動画を見る <i class="fas fa-play"></i></a>
+            </div>
+          </div>
+        </div>
+        <!-- 他の新着コンテンツも同様に表示 -->
+      </div>
+    </section>
+
+    <!-- 検索フォーム -->
+    <section id="search-form">
+      <h2>動画・サイト検索</h2>
+      <form id="searchForm">
+        <div class="mb-3">
+          <label for="keyword" class="form-label">フリーワード検索</label>
+          <input type="text" class="form-control" id="keyword" placeholder="キーワードを入力">
+        </div>
+        <div class="mb-3">
+          <label for="category" class="form-label">カテゴリ</label>
+          <select class="form-select" id="category">
+            <option value="">全て</option>
+            <option value="守備">守備</option>
+            <option value="走塁">走塁</option>
+            <option value="打撃">打撃</option>
+            <option value="ピッチング">ピッチング</option>
+            <option value="体幹トレーニング">体幹トレーニング</option>
+            <option value="戦術">戦術</option>
+            <option value="メンタル">メンタル</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="level" class="form-label">対象レベル</label>
+          <select class="form-select" id="level">
+            <option value="">全て</option>
+            <option value="初級">初級(主に低学年)</option>
+            <option value="中学年">中学年(主に中学年)</option>
+            <option value="高学年">高学年(主に高学年)</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="userName" class="form-label">動画提供ユーザー名</label>
+          <input type="text" class="form-control" id="userName" placeholder="動画提供ユーザー名を入力">
+        </div>
+        <button type="submit" class="btn btn-primary">検索 <i class="fas fa-search"></i></button>
+      </form>
+    </section>
+
+    <!-- 検索結果 -->
+    <section id="search-results">
+      <h2>検索結果</h2>
+      <div class="row">
+        <!-- 検索結果の表示例 -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">動画タイトル</h5>
+              <p class="card-text">投稿者: 浅利</p>
+              <a href="#" class="btn btn-primary">動画を見る <i class="fas fa-play"></i></a>
+            </div>
+          </div>
+        </div>
+        <!-- 他の検索結果も同様に表示 -->
+      </div>
+    </section>
+
+    <!-- 動画・サイト投稿フォーム -->
+    <section id="upload-form">
+      <h2>動画・サイト投稿</h2>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+        コンテンツを投稿 <i class="fas fa-upload"></i>
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="uploadModalLabel">コンテンツ投稿</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="uploadForm">
+                <div class="mb-3">
+                  <label for="contentType" class="form-label">コンテンツの種類</label>
+                  <select class="form-select" id="contentType">
+                    <option value="video">動画</option>
+                    <option value="site">サイト</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="contentUrl" class="form-label">URL</label>
+                  <input type="url" class="form-control" id="contentUrl" placeholder="動画またはサイトのURL">
+                </div>
+                 <div class="mb-3">
+                  <label for="videoTitle" class="form-label">動画タイトル</label>
+                  <input type="text" class="form-control" id="videoTitle" placeholder="動画タイトル">
+                </div>
+                <div class="mb-3">
+                  <label for="category" class="form-label">カテゴリ</label><br>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagShubi" value="守備">
+                    <label class="form-check-label" for="tagShubi">守備</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagSoru" value="走塁">
+                    <label class="form-check-label" for="tagSoru">走塁</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagDageki" value="打撃">
+                    <label class="form-check-label" for="tagDageki">打撃</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagPitching" value="ピッチング">
+                    <label class="form-check-label" for="tagPitching">ピッチング</label>
+                  </div>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagTraining" value="体幹トレーニング">
+                    <label class="form-check-label" for="tagTraining">体幹トレーニング</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagTactics" value="戦術">
+                    <label class="form-check-label" for="tagTactics">戦術</label>
+                  </div>
+                   <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagMental" value="メンタル">
+                    <label class="form-check-label" for="tagMental">メンタル</label>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">対象レベル</label><br>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagLow" value="初級(主に低学年)">
+                    <label class="form-check-label" for="tagLow">初級(主に低学年)</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagMiddle" value="中学年(主に中学年)">
+                    <label class="form-check-label" for="tagMiddle">中学年(主に中学年)</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="tagHigh" value="高学年(主に高学年)">
+                    <label class="form-check-label" for="tagHigh">高学年(主に高学年)</label>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="videoProvider" class="form-label">動画提供ユーザー名</label>
+                  <input type="text" class="form-control" id="videoProvider" placeholder="動画提供ユーザー名">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">フリー記述タグ</label><br>
+                  <input type="text" class="form-control freeTag" placeholder="タグ1">
+                  <input type="text" class="form-control freeTag" placeholder="タグ2">
+                  <input type="text" class="form-control freeTag" placeholder="タグ3">
+                  <input type="text" class="form-control freeTag" placeholder="タグ4">
+                  <input type="text" class="form-control freeTag" placeholder="タグ5">
+                  <input type="text" class="form-control freeTag" placeholder="タグ6">
+                  <input type="text" class="form-control freeTag" placeholder="タグ7">
+                  <input type="text" class="form-control freeTag" placeholder="タグ8">
+                  <input type="text" class="form-control freeTag" placeholder="タグ9">
+                  <input type="text" class="form-control freeTag" placeholder="タグ10">
+                </div>
+
+                <div class="mb-3">
+                  <label for="coachName" class="form-label">投稿者名</label>
+                  <select class="form-select" id="coachName">
+                    <option selected>選択してください</option>
+                    <option value="浅利">浅利</option>
+                    <option value="岡本">岡本</option>
+                    <option value="奥山">奥山</option>
+                    <option value="横谷">横谷</option>
+                  </select>
+                </div>
+                 <button type="submit" class="btn btn-primary">保存</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 動画リスト -->
+    <section id="video-list">
+      <h2>動画一覧</h2>
+      <ul class="list-unstyled">
+        <!-- 動画情報の記述例 -->
+        <li data-title="打撃の基本"
+            data-category="打撃"
+            data-level="初級"
+            data-user="山田"
+            data-tags="基本, バッティング"
+            data-url="https://www.youtube.com/watch?v=XXXXX">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">打撃の基本</h5>
+              <p class="card-text">カテゴリ: 打撃 | レベル: 初級 | 投稿者: 山田</p>
+              <a href="https://www.youtube.com/watch?v=XXXXX" class="btn btn-primary">動画を見る <i class="fas fa-play"></i></a>
+            </div>
+          </div>
+        </li>
+        <!-- 他の動画も同様に記述 -->
+      </ul>
+    </section>
+  </div>
+
+  <footer class="bg-dark text-white text-center py-3">
+    <p>&copy; 2025 少年野球 練習ドリル共有サイト</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // 検索フォームの送信処理
+      $('#searchForm').submit(function(e) {
+        e.preventDefault();
+        var keyword = $('#keyword').val().toLowerCase();
+        var category = $('#category').val();
+        var level = $('#level').val();
+        var userName = $('#userName').val().toLowerCase();
+
+        // 動画リストを検索
+        $('#video-list li').each(function() {
+          var title = $(this).data('title').toLowerCase();
+          var videoCategory = $(this).data('category');
+          var videoLevel = $(this).data('level');
+          var videoUser = $(this).data('user').toLowerCase();
+
+          var match = true;
+
+          // キーワード検索
+          if (keyword && title.indexOf(keyword) === -1 && videoCategory.indexOf(keyword) === -1 && videoLevel.indexOf(keyword) === -1 && videoUser.indexOf(keyword) === -1) {
+            match = false;
+          }
+
+          // カテゴリ検索
+          if (category && category !== videoCategory) {
+            match = false;
+          }
+
+          // 対象レベル検索
+          if (level && level !== videoLevel) {
+            match = false;
+          }
+
+          // ユーザ名検索
+          if (userName && videoUser.indexOf(userName) === -1) {
+            match = false;
+          }
+
+          // 一致する場合、表示、一致しない場合は非表示
+          if (match) {
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
+        });
+      });
+
+      // 投稿フォームの送信処理（今回はalertを表示するだけ）
+      $('#uploadForm').submit(function(e) {
+        e.preventDefault();
+        alert('投稿機能は現在利用できません。');
+      });
+    });
+  </script>
+</body>
+</html>
